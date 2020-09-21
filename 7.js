@@ -1,5 +1,6 @@
-function merge(arr1, arr2) {
+
+module.exports.merge = function merge(arr1, arr2) {
     let arr = [];
-    arr.concat(arr1, arr2);
-    arr = Array.from(new Set(arr));
+    arr=arr1.concat(arr2);
+    return Array.from(new Set(arr));
 }
