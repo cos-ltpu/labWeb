@@ -1,42 +1,44 @@
 const express = require('express')
+const exphbs = require('express-handlebars')
+const todoRoutes = require('./routes/todos')
+
 const app = express()
+const hbs = exphbs.create({
+        defaultLayout: 'main',
+        extname: 'hbs'
+    })
+
+
+app.engine('hbs', hbs.engine)
+app.set('view engine', 'hbs')
+app.set('views','views')
+
+const mongoose = require('mongoose')
+
+//app.use(express.urlencoded({extended: false}))
+
+app.use(todoRoutes)
+
 const port = 3000
 
-const mod = require('./7.js')
+async function start(){
+    try {
+        /*await mongoose.connect('mongodb+srv://ubuntu:ubuntu@cluster0.d2w01.mongodb.net/todos',{
+            useNewUrlParser: true,
+            useFindAndModify: false
+        })
+        const db = mongoose.connection
+        db.once('eopen', () => console.log('Connected to Mongoose'))*/
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+        app.listen(port, () => {
+            console.log(`Example app listening at http://localhost:${port}`)
+        })
+    } catch (e) {
+    console.log(e)}
+}
+
+start();
 
 
-app.get('/api/Familiyamya/lab1/ex7', function (req, res) {
-    let arr1 = req.query.arr1
-    let arr2 = req.query.arr2
-    let arr = mod.merge(arr1, arr2);
 
-    let resArr = '<ul>';
-    for (let i = 0; i < arr.length; i++) {
-        resArr += arr[i] + ' '
-    }
-    resArr += '</ul>';
-    res.send(resArr);
-
-})
-
-app.get('/api/Familiyamya/lab1/ex17', function (req, res) {
-    res.send(("function isObject(obj) {\n" +
-        "    if ((typeof obj == \"object\") && obj != null) return true;\n" +
-        "    else return false;\n" +
-        "}"))
-})
-
-app.get('/api/Familiyamya/lab1/ex20', function (req, res) {
-    res.send((" function Async(arr) {\n" +
-        "    for (let i=0; i!=arr.length; i++) arr[i]().then(result => alert(result), error => alert(error));\n" +
-        "} "))
-})
-
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
 
